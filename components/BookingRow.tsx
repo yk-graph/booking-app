@@ -1,26 +1,28 @@
-import Link from "next/link";
-import StatusBadge from "@/components/StatusBadge";
-import { isEditableStatus, lawnSizeLabel, timeSlotLabel, type Booking } from "@/lib/types";
+import Link from 'next/link'
+import StatusBadge from '@/components/StatusBadge'
+import { isEditableStatus, lawnSizeLabel, timeSlotLabel, type Booking } from '@/lib/types'
 
 function rowAccent(status: string) {
-  if (status === "pending") return "border-l-amber-400";
-  if (status === "confirmed") return "border-l-green-600";
-  if (status === "completed") return "border-l-blue-400";
-  if (status === "cancelled") return "border-l-red-400";
-  return "border-l-transparent";
+  if (status === 'pending') return 'border-l-amber-400'
+  if (status === 'confirmed') return 'border-l-green-600'
+  if (status === 'completed') return 'border-l-blue-400'
+  if (status === 'cancelled') return 'border-l-red-400'
+  return 'border-l-transparent'
 }
 
 export function BookingCard({ booking }: { booking: Booking }) {
-  const detailsHref = `/dashboard/${booking.id}`;
-  const editHref = `/dashboard/${booking.id}/edit`;
-  const where = `${booking.street_address}, ${booking.city}`;
+  const detailsHref = `/dashboard/${booking.id}`
+  const editHref = `/dashboard/${booking.id}/edit`
+  const where = `${booking.street_address}, ${booking.city}`
 
   return (
     <div className="rounded-lg border border-gray-200 overflow-hidden bg-white">
       <div className={`border-l-4 ${rowAccent(booking.status)} px-3 py-3`}>
         <div className="min-w-0">
           <div className="flex items-center justify-between gap-2">
-            <p className="text-sm font-medium text-gray-900 whitespace-nowrap">{timeSlotLabel(booking.time_slot)}</p>
+            <p className="text-sm font-medium text-gray-900 whitespace-nowrap">
+              {timeSlotLabel(booking.time_slot)}
+            </p>
             <StatusBadge status={booking.status} className="shrink-0" />
           </div>
           <p className="mt-1 text-sm font-medium text-gray-900 truncate">{booking.full_name}</p>
@@ -41,17 +43,19 @@ export function BookingCard({ booking }: { booking: Booking }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 export default function BookingRow({ booking }: { booking: Booking }) {
-  const detailsHref = `/dashboard/${booking.id}`;
-  const editHref = `/dashboard/${booking.id}/edit`;
-  const where = `${booking.street_address}, ${booking.city}`;
+  const detailsHref = `/dashboard/${booking.id}`
+  const editHref = `/dashboard/${booking.id}/edit`
+  const where = `${booking.street_address}, ${booking.city}`
 
   return (
     <tr className="bg-white border-b border-gray-100 hover:bg-gray-50">
-      <td className={`px-4 py-2.5 align-middle whitespace-nowrap border-l-4 ${rowAccent(booking.status)}`}>
+      <td
+        className={`px-4 py-2.5 align-middle whitespace-nowrap border-l-4 ${rowAccent(booking.status)}`}
+      >
         {timeSlotLabel(booking.time_slot)}
       </td>
       <td className="px-4 py-2.5 align-middle">
@@ -80,5 +84,5 @@ export default function BookingRow({ booking }: { booking: Booking }) {
         </Link>
       </td>
     </tr>
-  );
+  )
 }

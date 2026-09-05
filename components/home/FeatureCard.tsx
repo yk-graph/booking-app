@@ -3,9 +3,9 @@ export default function FeatureCard({
   title,
   body,
 }: {
-  icon: string;
-  title: string;
-  body: string;
+  icon: string
+  title: string
+  body: string
 }) {
   return (
     <div className="flex gap-4 rounded-xl border border-gray-100 bg-white p-5 shadow-sm">
@@ -17,5 +17,5 @@ export default function FeatureCard({
         <p className="mt-1 text-sm text-gray-600">{body}</p>
       </div>
     </div>
-  );
+  )
 }

@@ -1,6 +1,6 @@
-import Link from "next/link";
+import Link from 'next/link'
 
-import HeroCarousel from "./HeroCarousel";
+import HeroCarousel from './HeroCarousel'
 
 export default function HomeHero() {
   return (
@@ -16,8 +16,8 @@ export default function HomeHero() {
           Lawn care, booked in minutes.
         </h1>
         <p className="mx-auto mt-3 max-w-md text-emerald-50">
-          Tell us about your lawn, pick a time, and our local crew handles the rest —
-          no phone tag, no haggling.
+          Tell us about your lawn, pick a time, and our local crew handles the rest — no phone tag,
+          no haggling.
         </p>
         <Link
           href="/step1"
@@ -36,5 +36,5 @@ export default function HomeHero() {
         <path d="M0,0 Q720,100 1440,0 L1440,100 L0,100 Z" />
       </svg>
     </section>
-  );
+  )
 }

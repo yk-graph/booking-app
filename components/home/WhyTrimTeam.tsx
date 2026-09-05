@@ -1,27 +1,27 @@
-import FeatureCard from "./FeatureCard";
+import FeatureCard from './FeatureCard'
 
 const FEATURES = [
   {
-    icon: "💵",
-    title: "Transparent pricing",
-    body: "Clear rates based on lawn size. No haggling, no surprises.",
+    icon: '💵',
+    title: 'Transparent pricing',
+    body: 'Clear rates based on lawn size. No haggling, no surprises.',
   },
   {
-    icon: "🚛",
-    title: "Local crews",
-    body: "Trusted teams serving 19 cities across Metro Vancouver.",
+    icon: '🚛',
+    title: 'Local crews',
+    body: 'Trusted teams serving 19 cities across Metro Vancouver.',
   },
   {
-    icon: "⚡",
-    title: "Easy online booking",
-    body: "Book your service online in under two minutes.",
+    icon: '⚡',
+    title: 'Easy online booking',
+    body: 'Book your service online in under two minutes.',
   },
   {
-    icon: "✅",
-    title: "Satisfaction guaranteed",
+    icon: '✅',
+    title: 'Satisfaction guaranteed',
     body: "Not happy with the result? We'll come back and make it right.",
   },
-];
+]
 
 export default function WhyTrimTeam() {
   return (
@@ -33,5 +33,5 @@ export default function WhyTrimTeam() {
         ))}
       </div>
     </section>
-  );
+  )
 }

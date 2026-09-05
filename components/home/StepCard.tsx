@@ -4,10 +4,10 @@ export default function StepCard({
   title,
   body,
 }: {
-  step: number;
-  icon: string;
-  title: string;
-  body: string;
+  step: number
+  icon: string
+  title: string
+  body: string
 }) {
   return (
     <div className="rounded-xl border border-gray-100 bg-white p-6 text-center shadow-sm">
@@ -20,5 +20,5 @@ export default function StepCard({
       <h3 className="mt-1 font-semibold text-gray-900">{title}</h3>
       <p className="mt-2 text-sm text-gray-600">{body}</p>
     </div>
-  );
+  )
 }

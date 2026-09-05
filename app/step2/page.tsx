@@ -1,57 +1,57 @@
-"use client";
+'use client'
 
-import { useRouter } from "next/navigation";
-import { SubmitEvent, useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useRouter } from 'next/navigation'
+import { SubmitEvent, useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
-import StepHeader from "@/components/StepHeader";
-import StepNav from "@/components/StepNav";
-import TextField from "@/components/TextField";
-import { getDraft, saveDraft } from "@/lib/storage";
+import StepHeader from '@/components/StepHeader'
+import StepNav from '@/components/StepNav'
+import TextField from '@/components/TextField'
+import { getDraft, saveDraft } from '@/lib/storage'
 
 export default function Step2Page() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [fullName, setFullName] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
 
   useEffect(() => {
-    const currentDraft = getDraft();
-    if (currentDraft.full_name) setFullName(currentDraft.full_name);
-    if (currentDraft.email) setEmail(currentDraft.email);
-    if (currentDraft.phone) setPhone(currentDraft.phone);
-  }, []);
+    const currentDraft = getDraft()
+    if (currentDraft.full_name) setFullName(currentDraft.full_name)
+    if (currentDraft.email) setEmail(currentDraft.email)
+    if (currentDraft.phone) setPhone(currentDraft.phone)
+  }, [])
 
   const handleNext = (e: SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    toast.dismiss();
+    e.preventDefault()
+    toast.dismiss()
 
     if (!fullName.trim()) {
-      toast.error("Please enter your full name.");
-      return;
+      toast.error('Please enter your full name.')
+      return
     }
 
     if (!email.trim()) {
-      toast.error("Please enter your email address.");
-      return;
+      toast.error('Please enter your email address.')
+      return
     }
 
     if (!phone.trim()) {
-      toast.error("Please enter your phone number.");
-      return;
+      toast.error('Please enter your phone number.')
+      return
     }
 
-    const currentDraft = getDraft();
+    const currentDraft = getDraft()
     saveDraft({
       ...currentDraft,
       full_name: fullName.trim(),
       email: email.trim(),
       phone: phone.trim(),
-    });
+    })
 
-    router.push("/step3");
-  };
+    router.push('/step3')
+  }
 
   return (
     <div className="max-w-xl mx-auto">
@@ -92,8 +92,8 @@ export default function Step2Page() {
           onChange={(e) => setPhone(e.target.value)}
         />
 
-        <StepNav onBack={() => router.push("/step1")} />
+        <StepNav onBack={() => router.push('/step1')} />
       </form>
     </div>
-  );
+  )
 }
