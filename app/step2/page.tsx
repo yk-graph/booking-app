@@ -1,27 +1,28 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { SubmitEvent, useEffect, useState } from 'react'
+import { SubmitEvent, useState, useSyncExternalStore } from 'react'
 import { toast } from 'sonner'
 
 import StepHeader from '@/components/StepHeader'
 import StepNav from '@/components/StepNav'
 import TextField from '@/components/TextField'
-import { getDraft, saveDraft } from '@/lib/storage'
+import {
+  type BookingDraft,
+  getDraftSnapshot,
+  getServerDraftSnapshot,
+  saveDraft,
+  subscribeDraft,
+} from '@/lib/storage'
 
 export default function Step2Page() {
   const router = useRouter()
+  const draft = useSyncExternalStore(subscribeDraft, getDraftSnapshot, getServerDraftSnapshot)
 
-  const [fullName, setFullName] = useState('')
-  const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
-
-  useEffect(() => {
-    const currentDraft = getDraft()
-    if (currentDraft.full_name) setFullName(currentDraft.full_name)
-    if (currentDraft.email) setEmail(currentDraft.email)
-    if (currentDraft.phone) setPhone(currentDraft.phone)
-  }, [])
+  const [edits, setEdits] = useState<BookingDraft>({})
+  const fullName = edits.full_name ?? draft.full_name ?? ''
+  const email = edits.email ?? draft.email ?? ''
+  const phone = edits.phone ?? draft.phone ?? ''
 
   const handleNext = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -42,9 +43,7 @@ export default function Step2Page() {
       return
     }
 
-    const currentDraft = getDraft()
     saveDraft({
-      ...currentDraft,
       full_name: fullName.trim(),
       email: email.trim(),
       phone: phone.trim(),
@@ -71,7 +70,7 @@ export default function Step2Page() {
           type="text"
           placeholder="e.g. John Doe"
           value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
+          onChange={(e) => setEdits((prev) => ({ ...prev, full_name: e.target.value }))}
         />
 
         <TextField
@@ -80,7 +79,7 @@ export default function Step2Page() {
           type="email"
           placeholder="e.g. john@example.com"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setEdits((prev) => ({ ...prev, email: e.target.value }))}
         />
 
         <TextField
@@ -89,7 +88,7 @@ export default function Step2Page() {
           type="tel"
           placeholder="e.g. 6045551234"
           value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          onChange={(e) => setEdits((prev) => ({ ...prev, phone: e.target.value }))}
         />
 
         <StepNav onBack={() => router.push('/step1')} />

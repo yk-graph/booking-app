@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { SubmitEvent, useEffect, useState } from 'react'
+import { SubmitEvent, useState, useSyncExternalStore } from 'react'
 import { toast } from 'sonner'
 
 import RadioCardGroup from '@/components/RadioCardGroup'
@@ -9,22 +9,23 @@ import SelectField from '@/components/SelectField'
 import StepHeader from '@/components/StepHeader'
 import StepNav from '@/components/StepNav'
 import TextField from '@/components/TextField'
-import { getDraft, saveDraft } from '@/lib/storage'
+import {
+  getDraftSnapshot,
+  getServerDraftSnapshot,
+  saveDraft,
+  subscribeDraft,
+  type BookingDraft,
+} from '@/lib/storage'
 import { CITIES, LAWN_SIZES, type City, type LawnSize } from '@/lib/types'
 
 export default function Step1Page() {
   const router = useRouter()
+  const draft = useSyncExternalStore(subscribeDraft, getDraftSnapshot, getServerDraftSnapshot)
 
-  const [city, setCity] = useState<City | ''>('')
-  const [streetAddress, setStreetAddress] = useState('')
-  const [lawnSize, setLawnSize] = useState<LawnSize | ''>('')
-
-  useEffect(() => {
-    const currentDraft = getDraft()
-    if (currentDraft.city) setCity(currentDraft.city as City)
-    if (currentDraft.street_address) setStreetAddress(currentDraft.street_address)
-    if (currentDraft.lawn_size) setLawnSize(currentDraft.lawn_size as LawnSize)
-  }, [])
+  const [edits, setEdits] = useState<BookingDraft>({})
+  const city = (edits.city ?? draft.city ?? '') as City | ''
+  const streetAddress = edits.street_address ?? draft.street_address ?? ''
+  const lawnSize = (edits.lawn_size ?? draft.lawn_size ?? '') as LawnSize | ''
 
   const handleNext = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -66,7 +67,13 @@ export default function Step1Page() {
         onSubmit={handleNext}
         className="space-y-4 bg-white p-5 rounded-xl border border-gray-100 shadow-sm"
       >
-        <SelectField label="City" name="city" value={city} onChange={setCity} options={CITIES} />
+        <SelectField
+          label="City"
+          name="city"
+          value={city}
+          onChange={(value) => setEdits((prev) => ({ ...prev, city: value as City }))}
+          options={CITIES}
+        />
 
         <TextField
           label="Street Address"
@@ -74,14 +81,14 @@ export default function Step1Page() {
           type="text"
           placeholder="e.g. 1234 Robson St"
           value={streetAddress}
-          onChange={(e) => setStreetAddress(e.target.value)}
+          onChange={(e) => setEdits((prev) => ({ ...prev, street_address: e.target.value }))}
         />
 
         <RadioCardGroup
           label="Lawn Size"
           name="lawn_size"
           value={lawnSize}
-          onChange={setLawnSize}
+          onChange={(value) => setEdits((prev) => ({ ...prev, lawn_size: value as LawnSize }))}
           options={LAWN_SIZES}
         />
 
