@@ -28,7 +28,10 @@ function railClasses(status: string) {
 export default async function BookingEditPage({
   params,
   searchParams,
-}: PageProps<'/dashboard/[id]/edit'>) {
+}: {
+  params: Promise<{ id: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
   const { id: rawId } = await params
   const id = Number(rawId)
   const { saved: savedParam } = await searchParams

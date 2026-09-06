@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
+import { ReactNode } from 'react'
 import { Toaster } from 'sonner'
+
 import SiteHeader from '@/components/SiteHeader'
 import './globals.css'
 
@@ -8,7 +10,7 @@ export const metadata: Metadata = {
   description: 'Book lawn mowing and yard care online.',
 }
 
-export default function RootLayout({ children }: LayoutProps<'/'>) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className="h-full">
       <body className="min-h-full flex flex-col">

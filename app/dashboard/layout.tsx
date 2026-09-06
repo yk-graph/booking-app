@@ -1,13 +1,15 @@
+import { redirect } from 'next/navigation'
+import { ReactNode } from 'react'
+
 import { logout } from '@/app/actions/auth'
 import DashboardSessionGuard from '@/components/DashboardSessionGuard'
 import { getStaffUser } from '@/lib/auth'
-import { redirect } from 'next/navigation'
 
 // Everything under /dashboard is staff-only.
 
 export const dynamic = 'force-dynamic'
 
-export default async function DashboardLayout({ children }: LayoutProps<'/dashboard'>) {
+export default async function DashboardLayout({ children }: { children: ReactNode }) {
   const user = await getStaffUser()
   if (!user) redirect('/login')
 
