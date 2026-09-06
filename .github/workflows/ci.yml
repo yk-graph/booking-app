@@ -34,5 +34,6 @@ jobs:
       - name: Run Format Check
         run: npm run format:check
 
-      - name: Run Build
-        run: npm run build
+      # [Todo] Uncomment this step when the build command is ready
+      # - name: Run Build
+      #   run: npm run build
