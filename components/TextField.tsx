@@ -1,16 +1,13 @@
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {
-  label: string;
-};
+  label: string
+}
 
 export default function TextField({ label, id, name, ...inputProps }: Props) {
-  const inputId = id ?? name;
+  const inputId = id ?? name
 
   return (
     <div>
-      <label
-        htmlFor={inputId}
-        className="block text-sm font-medium text-gray-700 mb-1"
-      >
+      <label htmlFor={inputId} className="block text-sm font-medium text-gray-700 mb-1">
         {label}
       </label>
       <input
@@ -20,5 +17,5 @@ export default function TextField({ label, id, name, ...inputProps }: Props) {
         {...inputProps}
       />
     </div>
-  );
+  )
 }

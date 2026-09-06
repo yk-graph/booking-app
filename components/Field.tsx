@@ -2,10 +2,10 @@
 // inputProps allows passing more props to the <input> element.
 
 type Props = React.InputHTMLAttributes<HTMLInputElement> & {
-  label: string;
-  error?: string;
-  hint?: string;
-};
+  label: string
+  error?: string
+  hint?: string
+}
 
 export default function Field({ label, error, hint, ...inputProps }: Props) {
   return (
@@ -21,5 +21,5 @@ export default function Field({ label, error, hint, ...inputProps }: Props) {
       {hint && <p className="text-xs text-gray-500 mt-1">{hint}</p>}
       {error && <p className="text-sm text-red-600 mt-1">{error}</p>}
     </div>
-  );
+  )
 }

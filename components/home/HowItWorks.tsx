@@ -1,22 +1,22 @@
-import StepCard from "./StepCard";
+import StepCard from './StepCard'
 
 const STEPS = [
   {
-    icon: "📍",
-    title: "Tell us about your lawn",
+    icon: '📍',
+    title: 'Tell us about your lawn',
     body: "Your city, address, and lawn size — that's all we need to start.",
   },
   {
-    icon: "📅",
-    title: "Pick a date & time",
-    body: "Choose the day and the time slot that works best for you.",
+    icon: '📅',
+    title: 'Pick a date & time',
+    body: 'Choose the day and the time slot that works best for you.',
   },
   {
-    icon: "🌱",
-    title: "We mow, you relax",
-    body: "Our local crew takes care of the rest. Sit back and enjoy a fresh lawn.",
+    icon: '🌱',
+    title: 'We mow, you relax',
+    body: 'Our local crew takes care of the rest. Sit back and enjoy a fresh lawn.',
   },
-];
+]
 
 export default function HowItWorks() {
   return (
@@ -29,5 +29,5 @@ export default function HowItWorks() {
         ))}
       </div>
     </section>
-  );
+  )
 }

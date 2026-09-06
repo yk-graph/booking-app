@@ -1,6 +1,6 @@
-import StatusBadge from "@/components/StatusBadge";
-import { formatDate } from "@/lib/format";
-import { lawnSizeLabel, timeSlotLabel, type Booking } from "@/lib/types";
+import StatusBadge from '@/components/StatusBadge'
+import { formatDate } from '@/lib/format'
+import { lawnSizeLabel, timeSlotLabel, type Booking } from '@/lib/types'
 
 export default function BookingResultRow({ booking }: { booking: Booking }) {
   return (
@@ -15,5 +15,5 @@ export default function BookingResultRow({ booking }: { booking: Booking }) {
       </div>
       <StatusBadge status={booking.status} />
     </li>
-  );
+  )
 }

@@ -1,10 +1,10 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
-import SavedToast from "@/components/SavedToast";
-import StatusBadge from "@/components/StatusBadge";
-import { sql } from "@/lib/db";
-import { formatDate } from "@/lib/format";
-import { isEditableStatus, lawnSizeLabel, timeSlotLabel, type Booking } from "@/lib/types";
+import Link from 'next/link'
+import { notFound } from 'next/navigation'
+import SavedToast from '@/components/SavedToast'
+import StatusBadge from '@/components/StatusBadge'
+import { sql } from '@/lib/db'
+import { formatDate } from '@/lib/format'
+import { isEditableStatus, lawnSizeLabel, timeSlotLabel, type Booking } from '@/lib/types'
 
 function Info({ label, children }: { label: string; children: React.ReactNode }) {
   return (
@@ -12,23 +12,27 @@ function Info({ label, children }: { label: string; children: React.ReactNode })
       <dt className="text-sm text-gray-500">{label}</dt>
       <dd className="text-sm text-gray-900 wrap-break-word">{children}</dd>
     </div>
-  );
+  )
 }
 
 function railClasses(status: string) {
-  if (status === "pending") return { wrap: "bg-amber-50 border-amber-100", card: "border-amber-100" };
-  if (status === "completed") return { wrap: "bg-blue-50 border-blue-100", card: "border-blue-100" };
-  if (status === "cancelled") return { wrap: "bg-red-50 border-red-100", card: "border-red-100" };
-  return { wrap: "bg-green-50 border-green-100", card: "border-green-100" };
+  if (status === 'pending')
+    return { wrap: 'bg-amber-50 border-amber-100', card: 'border-amber-100' }
+  if (status === 'completed') return { wrap: 'bg-blue-50 border-blue-100', card: 'border-blue-100' }
+  if (status === 'cancelled') return { wrap: 'bg-red-50 border-red-100', card: 'border-red-100' }
+  return { wrap: 'bg-green-50 border-green-100', card: 'border-green-100' }
 }
 
-export default async function BookingDetailPage({ params, searchParams }: PageProps<"/dashboard/[id]">) {
-  const { id: rawId } = await params;
-  const id = Number(rawId);
-  const { saved: savedParam } = await searchParams;
-  const saved = Array.isArray(savedParam) ? savedParam[0] : savedParam;
+export default async function BookingDetailPage({
+  params,
+  searchParams,
+}: PageProps<'/dashboard/[id]'>) {
+  const { id: rawId } = await params
+  const id = Number(rawId)
+  const { saved: savedParam } = await searchParams
+  const saved = Array.isArray(savedParam) ? savedParam[0] : savedParam
 
-  if (!Number.isInteger(id) || id < 1) notFound();
+  if (!Number.isInteger(id) || id < 1) notFound()
 
   const rows = (await sql`
     select
@@ -37,12 +41,12 @@ export default async function BookingDetailPage({ params, searchParams }: PagePr
       time_slot, status, note, created_at, updated_at
     from bookings
     where id = ${id}
-  `) as Booking[];
+  `) as Booking[]
 
-  const booking = rows[0];
-  if (!booking) notFound();
+  const booking = rows[0]
+  if (!booking) notFound()
 
-  const rail = railClasses(booking.status);
+  const rail = railClasses(booking.status)
 
   return (
     <div className="max-w-3xl mx-auto">
@@ -81,15 +85,24 @@ export default async function BookingDetailPage({ params, searchParams }: PagePr
               {booking.street_address}, {booking.city}
             </Info>
             <Info label="Note">
-              {booking.note ? booking.note : <span className="font-normal text-gray-400">None</span>}
+              {booking.note ? (
+                booking.note
+              ) : (
+                <span className="font-normal text-gray-400">None</span>
+              )}
             </Info>
           </dl>
         </div>
 
-        <aside className={`flex flex-col gap-4 shrink-0 md:w-52 px-4 py-5 border-t md:border-t-0 md:border-l ${rail.wrap}`}>
+        <aside
+          className={`flex flex-col gap-4 shrink-0 md:w-52 px-4 py-5 border-t md:border-t-0 md:border-l ${rail.wrap}`}
+        >
           <div className={`rounded bg-white px-3 py-3 border ${rail.card}`}>
             <p className="text-xs text-gray-500 mb-2">Status</p>
-            <StatusBadge status={booking.status} className="block w-full text-sm py-1.5 text-center" />
+            <StatusBadge
+              status={booking.status}
+              className="block w-full text-sm py-1.5 text-center"
+            />
           </div>
 
           <div className="md:mt-auto">
@@ -105,5 +118,5 @@ export default async function BookingDetailPage({ params, searchParams }: PagePr
         </aside>
       </div>
     </div>
-  );
+  )
 }

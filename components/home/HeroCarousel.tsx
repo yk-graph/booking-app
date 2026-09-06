@@ -1,17 +1,13 @@
-"use client";
+'use client'
 
-import Image from "next/image";
-import Autoplay from "embla-carousel-autoplay";
-import useEmblaCarousel from "embla-carousel-react";
+import Image from 'next/image'
+import Autoplay from 'embla-carousel-autoplay'
+import useEmblaCarousel from 'embla-carousel-react'
 
-const IMAGES = [
-  "/hero/trim-image_01.jpg",
-  "/hero/trim-image_02.jpg",
-  "/hero/trim-image_03.jpg",
-];
+const IMAGES = ['/hero/trim-image_01.jpg', '/hero/trim-image_02.jpg', '/hero/trim-image_03.jpg']
 
 export default function HeroCarousel() {
-  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000 })]);
+  const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000 })])
 
   return (
     <div className="absolute inset-0 overflow-hidden" ref={emblaRef}>
@@ -30,5 +26,5 @@ export default function HeroCarousel() {
         ))}
       </div>
     </div>
-  );
+  )
 }
