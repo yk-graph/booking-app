@@ -50,7 +50,11 @@ function splitUpcomingAndPast(bookings: Booking[], today: string) {
   return { upcoming: groupByDate(upcoming), past: groupByDate(past) }
 }
 
-export default async function DashboardPage({ searchParams }: PageProps<'/dashboard'>) {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
   const raw = await searchParams
   const statusFilter = STATUSES.some((item) => item.value === firstParam(raw.status))
     ? firstParam(raw.status)
