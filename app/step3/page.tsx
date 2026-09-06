@@ -36,7 +36,6 @@ export default function Step3Page() {
   const [bookedSlots, setBookedSlots] = useState<BookedSlots>(NO_BOOKED_SLOTS)
 
   useEffect(() => {
-    // If no date is selected, skip the fetch (UI disables all slots separately).
     if (!serviceDate) return
 
     async function fetchBookedSlots() {
@@ -47,7 +46,6 @@ export default function Step3Page() {
     fetchBookedSlots()
   }, [serviceDate])
 
-  // Determine disabled time slots based on existing bookings and conflict rules
   const disabledValues = !serviceDate
     ? new Set(TIME_SLOTS.map((slot) => slot.value))
     : (() => {
