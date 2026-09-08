@@ -8,12 +8,14 @@ Customers book without an account. Staff sign in to see and manage jobs.
 **Live site:** https://trim-team.vercel.app
 
 ## Stack
+
 - Next.js (App Router) + TypeScript
 - Tailwind CSS
 - Neon Postgres (`@neondatabase/serverless`)
 - Cookie sessions for staff (signed with `SESSION_SECRET`)
 
 ## Routes
+
 - `/` — public home
 - `/step1`, `/step2`, `/step3` — public booking form
 - `/login` — staff sign-in
@@ -22,6 +24,7 @@ Customers book without an account. Staff sign in to see and manage jobs.
 - `/dashboard/[id]/edit` — staff edit, confirm, complete, or cancel
 
 ## Setup
+
 1. Clone the repo and install:
 
 ```bash

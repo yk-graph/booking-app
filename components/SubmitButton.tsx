@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import { useFormStatus } from "react-dom";
+import { useFormStatus } from 'react-dom'
 
 // A submit button that disables itself and says "Saving…" while the form's
 // server action is running. useFormStatus() reads the state of the <form> it
@@ -8,12 +8,12 @@ import { useFormStatus } from "react-dom";
 
 export default function SubmitButton({
   children,
-  pendingLabel = "Saving…",
+  pendingLabel = 'Saving…',
 }: {
-  children: React.ReactNode;
-  pendingLabel?: string;
+  children: React.ReactNode
+  pendingLabel?: string
 }) {
-  const { pending } = useFormStatus();
+  const { pending } = useFormStatus()
   return (
     <button
       type="submit"
@@ -22,5 +22,5 @@ export default function SubmitButton({
     >
       {pending ? pendingLabel : children}
     </button>
-  );
+  )
 }

@@ -1,11 +1,11 @@
 type Props = {
-  onBack?: () => void;
-  nextLabel?: string;
-};
+  onBack?: () => void
+  nextLabel?: string
+}
 
-export default function StepNav({ onBack, nextLabel = "Next Step →" }: Props) {
+export default function StepNav({ onBack, nextLabel = 'Next Step →' }: Props) {
   return (
-    <div className={`pt-2 flex ${onBack ? "justify-between" : "justify-end"}`}>
+    <div className={`pt-2 flex ${onBack ? 'justify-between' : 'justify-end'}`}>
       {onBack && (
         <button
           type="button"
@@ -22,5 +22,5 @@ export default function StepNav({ onBack, nextLabel = "Next Step →" }: Props) 
         {nextLabel}
       </button>
     </div>
-  );
+  )
 }

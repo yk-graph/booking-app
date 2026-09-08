@@ -1,29 +1,29 @@
-"use client";
+'use client'
 
-import { useRouter } from "next/navigation";
-import { CITIES, LAWN_SIZES, STATUSES } from "@/lib/types";
+import { useRouter } from 'next/navigation'
+import { CITIES, LAWN_SIZES, STATUSES } from '@/lib/types'
 
 const selectClass =
-  "w-full border border-gray-300 rounded px-2.5 py-1.5 text-sm bg-white focus:outline-none focus:border-green-700";
+  'w-full border border-gray-300 rounded px-2.5 py-1.5 text-sm bg-white focus:outline-none focus:border-green-700'
 
 type Props = {
-  status: string;
-  city: string;
-  lawnSize: string;
-};
+  status: string
+  city: string
+  lawnSize: string
+}
 
 function hrefFor(status: string, city: string, lawnSize: string) {
-  const params = new URLSearchParams();
-  if (status) params.set("status", status);
-  if (city) params.set("city", city);
-  if (lawnSize) params.set("lawn_size", lawnSize);
-  const query = params.toString();
-  return query ? `/dashboard?${query}` : "/dashboard";
+  const params = new URLSearchParams()
+  if (status) params.set('status', status)
+  if (city) params.set('city', city)
+  if (lawnSize) params.set('lawn_size', lawnSize)
+  const query = params.toString()
+  return query ? `/dashboard?${query}` : '/dashboard'
 }
 
 export default function BookingFilters({ status, city, lawnSize }: Props) {
-  const router = useRouter();
-  const filtered = Boolean(status || city || lawnSize);
+  const router = useRouter()
+  const filtered = Boolean(status || city || lawnSize)
 
   return (
     <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end">
@@ -76,11 +76,11 @@ export default function BookingFilters({ status, city, lawnSize }: Props) {
         <button
           type="button"
           className="shrink-0 text-sm font-medium text-green-800 hover:underline sm:mb-1.5"
-          onClick={() => router.push("/dashboard")}
+          onClick={() => router.push('/dashboard')}
         >
           Clear
         </button>
       )}
     </div>
-  );
+  )
 }

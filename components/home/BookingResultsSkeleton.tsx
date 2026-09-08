@@ -11,5 +11,5 @@ export default function BookingResultsSkeleton() {
         </li>
       ))}
     </ul>
-  );
+  )
 }

@@ -1,129 +1,131 @@
-"use client";
+'use client'
 
-import { useRouter } from "next/navigation";
-import { SubmitEvent, useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useRouter } from 'next/navigation'
+import { SubmitEvent, useEffect, useState, useSyncExternalStore } from 'react'
+import { toast } from 'sonner'
 
-import { createBooking, getBookedSlotsByDate, type BookedSlots } from "@/app/actions/booking";
-import DateField from "@/components/DateField";
-import RadioCardGroup from "@/components/RadioCardGroup";
-import StepHeader from "@/components/StepHeader";
-import StepNav from "@/components/StepNav";
-import { clearDraft, getDraft, saveDraft } from "@/lib/storage";
-import { TIME_SLOTS, type TimeSlot } from "@/lib/types";
+import { createBooking, getBookedSlotsByDate, type BookedSlots } from '@/app/actions/booking'
+import DateField from '@/components/DateField'
+import RadioCardGroup from '@/components/RadioCardGroup'
+import StepHeader from '@/components/StepHeader'
+import StepNav from '@/components/StepNav'
+import {
+  type BookingDraft,
+  clearDraft,
+  getDraftSnapshot,
+  getServerDraftSnapshot,
+  saveDraft,
+  subscribeDraft,
+} from '@/lib/storage'
+import { TIME_SLOTS, type TimeSlot } from '@/lib/types'
 
 const NO_BOOKED_SLOTS: BookedSlots = {
   morning: false,
   afternoon: false,
   full_day: false,
-};
+}
 
 export default function Step3Page() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [serviceDate, setServiceDate] = useState("");
-  const [timeSlot, setTimeSlot] = useState<TimeSlot | "">("");
-  const [bookedSlots, setBookedSlots] = useState<BookedSlots>(NO_BOOKED_SLOTS);
+  const draft = useSyncExternalStore(subscribeDraft, getDraftSnapshot, getServerDraftSnapshot)
 
-  useEffect(() => {
-    const currentDraft = getDraft();
-    if (currentDraft.service_date) setServiceDate(currentDraft.service_date);
-    if (currentDraft.time_slot) setTimeSlot(currentDraft.time_slot as TimeSlot);
-  }, []);
+  const [edits, setEdits] = useState<BookingDraft>({})
+  const serviceDate = edits.service_date ?? draft.service_date ?? ''
+  const timeSlot = (edits.time_slot ?? draft.time_slot ?? '') as TimeSlot | ''
+  const [bookedSlots, setBookedSlots] = useState<BookedSlots>(NO_BOOKED_SLOTS)
 
   useEffect(() => {
-    // If no date is selected, skip the fetch (UI disables all slots separately).
-    if (!serviceDate) return;
+    if (!serviceDate) return
 
     async function fetchBookedSlots() {
-      const result = await getBookedSlotsByDate(serviceDate);
-      setBookedSlots(result.bookedSlots);
+      const result = await getBookedSlotsByDate(serviceDate)
+      setBookedSlots(result.bookedSlots)
     }
 
-    fetchBookedSlots();
-  }, [serviceDate]);
+    fetchBookedSlots()
+  }, [serviceDate])
 
-  // Determine disabled time slots based on existing bookings and conflict rules
   const disabledValues = !serviceDate
     ? new Set(TIME_SLOTS.map((slot) => slot.value))
     : (() => {
-        const disabled = new Set<TimeSlot>();
-        const isMorningBooked = bookedSlots.morning;
-        const isAfternoonBooked = bookedSlots.afternoon;
-        const isFullDayBooked = bookedSlots.full_day;
+        const disabled = new Set<TimeSlot>()
+        const isMorningBooked = bookedSlots.morning
+        const isAfternoonBooked = bookedSlots.afternoon
+        const isFullDayBooked = bookedSlots.full_day
 
         if (isFullDayBooked) {
-          disabled.add("morning");
-          disabled.add("afternoon");
-          disabled.add("full_day");
+          disabled.add('morning')
+          disabled.add('afternoon')
+          disabled.add('full_day')
         }
 
         if (isMorningBooked || isAfternoonBooked) {
-          disabled.add("full_day");
+          disabled.add('full_day')
         }
 
-        if (isMorningBooked) disabled.add("morning");
-        if (isAfternoonBooked) disabled.add("afternoon");
+        if (isMorningBooked) disabled.add('morning')
+        if (isAfternoonBooked) disabled.add('afternoon')
 
-        return disabled;
-      })();
+        return disabled
+      })()
 
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    toast.dismiss();
+    e.preventDefault()
+    toast.dismiss()
 
     if (!serviceDate) {
-      toast.error("Please select a service date.");
-      return;
+      toast.error('Please select a service date.')
+      return
     }
 
     if (!timeSlot) {
-      toast.error("Please select a time slot.");
-      return;
+      toast.error('Please select a time slot.')
+      return
     }
 
     if (bookedSlots[timeSlot]) {
-      toast.error("That time slot is already booked. Please choose another.");
-      return;
+      toast.error('That time slot is already booked. Please choose another.')
+      return
     }
 
-    const draft = saveDraft({
+    const saved = saveDraft({
       service_date: serviceDate,
       time_slot: timeSlot as TimeSlot,
-    });
+    })
 
     if (
-      !draft.city ||
-      !draft.street_address ||
-      !draft.lawn_size ||
-      !draft.full_name ||
-      !draft.email ||
-      !draft.phone
+      !saved.city ||
+      !saved.street_address ||
+      !saved.lawn_size ||
+      !saved.full_name ||
+      !saved.email ||
+      !saved.phone
     ) {
-      toast.error("Please complete all booking steps before submitting.");
-      return;
+      toast.error('Please complete all booking steps before submitting.')
+      return
     }
 
     const result = await createBooking({
-      city: draft.city,
-      street_address: draft.street_address,
-      lawn_size: draft.lawn_size,
-      full_name: draft.full_name,
-      email: draft.email,
-      phone: draft.phone,
+      city: saved.city,
+      street_address: saved.street_address,
+      lawn_size: saved.lawn_size,
+      full_name: saved.full_name,
+      email: saved.email,
+      phone: saved.phone,
       service_date: serviceDate,
       time_slot: timeSlot as TimeSlot,
-    });
+    })
 
     if (result.success) {
-      clearDraft();
-      toast.success("Booking completed successfully!");
-      router.push("/");
-      return;
+      clearDraft()
+      toast.success('Booking completed successfully!')
+      router.push('/')
+      return
     }
 
-    toast.error(result.error);
-  };
+    toast.error(result.error)
+  }
 
   return (
     <div className="max-w-xl mx-auto">
@@ -137,20 +139,24 @@ export default function Step3Page() {
         onSubmit={handleSubmit}
         className="space-y-4 bg-white p-5 rounded-xl border border-gray-100 shadow-sm"
       >
-        <DateField label="Service Date" value={serviceDate} onChange={setServiceDate} />
+        <DateField
+          label="Service Date"
+          value={serviceDate}
+          onChange={(value) => setEdits((prev) => ({ ...prev, service_date: value }))}
+        />
 
         <RadioCardGroup
           label="Time Slot"
           name="time_slot"
           value={timeSlot}
-          onChange={setTimeSlot}
+          onChange={(value) => setEdits((prev) => ({ ...prev, time_slot: value as TimeSlot }))}
           options={TIME_SLOTS}
           disabledValues={disabledValues}
-          disabledLabel={serviceDate ? "Already Booked" : "Select a date first"}
+          disabledLabel={serviceDate ? 'Already Booked' : 'Select a date first'}
         />
 
-        <StepNav onBack={() => router.push("/step2")} nextLabel="Complete Booking →" />
+        <StepNav onBack={() => router.push('/step2')} nextLabel="Complete Booking →" />
       </form>
     </div>
-  );
+  )
 }

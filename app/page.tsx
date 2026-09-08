@@ -1,9 +1,9 @@
-import BookingLookup from "@/components/home/BookingLookup";
-import HomeCta from "@/components/home/HomeCta";
-import HomeHero from "@/components/home/HomeHero";
-import HowItWorks from "@/components/home/HowItWorks";
-import SiteFooter from "@/components/home/SiteFooter";
-import WhyTrimTeam from "@/components/home/WhyTrimTeam";
+import BookingLookup from '@/components/home/BookingLookup'
+import HomeCta from '@/components/home/HomeCta'
+import HomeHero from '@/components/home/HomeHero'
+import HowItWorks from '@/components/home/HowItWorks'
+import SiteFooter from '@/components/home/SiteFooter'
+import WhyTrimTeam from '@/components/home/WhyTrimTeam'
 
 // let bookings = (await sql`
 //       select
@@ -26,5 +26,5 @@ export default async function HomePage() {
       <HomeCta />
       <SiteFooter />
     </div>
-  );
+  )
 }

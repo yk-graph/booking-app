@@ -1,34 +1,34 @@
-"use client";
+'use client'
 
-import { SubmitEvent, useState, useTransition } from "react";
-import { toast } from "sonner";
+import { SubmitEvent, useState, useTransition } from 'react'
+import { toast } from 'sonner'
 
-import { getBookingsByEmail } from "@/app/actions/booking";
-import type { Booking } from "@/lib/types";
-import BookingResultRow from "./BookingResultRow";
-import BookingResultsSkeleton from "./BookingResultsSkeleton";
+import { getBookingsByEmail } from '@/app/actions/booking'
+import type { Booking } from '@/lib/types'
+import BookingResultRow from './BookingResultRow'
+import BookingResultsSkeleton from './BookingResultsSkeleton'
 
 export default function BookingLookup() {
-  const [email, setEmail] = useState("");
-  const [result, setResult] = useState<{ email: string; bookings: Booking[] | null } | null>(null);
-  const [isPending, startTransition] = useTransition();
+  const [email, setEmail] = useState('')
+  const [result, setResult] = useState<{ email: string; bookings: Booking[] | null } | null>(null)
+  const [isPending, startTransition] = useTransition()
 
   function handleSubmit(e: SubmitEvent<HTMLFormElement>) {
-    e.preventDefault();
+    e.preventDefault()
 
-    const trimmed = email.trim();
-    if (!trimmed) return;
+    const trimmed = email.trim()
+    if (!trimmed) return
 
     startTransition(async () => {
-      const res = await getBookingsByEmail(trimmed);
+      const res = await getBookingsByEmail(trimmed)
 
       if (!res.success) {
-        toast.error(res.error);
-        return;
+        toast.error(res.error)
+        return
       }
 
-      setResult({ email: trimmed, bookings: res.bookings });
-    });
+      setResult({ email: trimmed, bookings: res.bookings })
+    })
   }
 
   return (
@@ -52,7 +52,7 @@ export default function BookingLookup() {
           disabled={isPending}
           className="rounded-lg bg-emerald-600 px-6 py-2.5 font-medium text-white transition-colors hover:bg-emerald-700 disabled:opacity-50"
         >
-          {isPending ? "Searching…" : "Search"}
+          {isPending ? 'Searching…' : 'Search'}
         </button>
       </form>
 
@@ -72,5 +72,5 @@ export default function BookingLookup() {
         )
       ) : null}
     </section>
-  );
+  )
 }
