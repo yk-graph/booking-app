@@ -1,44 +1,31 @@
--- This SQL code was used to create the postgres database schema in neon.
-
--- ---------------------------------------------------------------------------
--- Staff users (the only people who log in)
--- ---------------------------------------------------------------------------
 create table if not exists staff_users (
-  id            serial primary key,
-  name          text        not null,
-  email         text        not null unique,
-  password_hash text        not null,          -- bcrypt hash
-  created_at    timestamptz not null default now()
+  id            int auto_increment primary key,
+  name          varchar(255) not null,
+  email         varchar(255) not null unique,
+  password_hash varchar(255) not null,
+  created_at    timestamp    not null default current_timestamp
 );
 
--- ---------------------------------------------------------------------------
--- Bookings (created by the public form, managed by staff)
--- ---------------------------------------------------------------------------
 create table if not exists bookings (
-  id             serial primary key,
+  id             int auto_increment primary key,
 
-  -- step 1: the job
-  city           text not null, 
-  street_address text not null,
-  lawn_size      text not null check (lawn_size in ('small', 'medium', 'large', 'extra_large')),
+  city           varchar(255) not null,
+  street_address varchar(255) not null,
+  lawn_size      enum('small', 'medium', 'large', 'extra_large') not null,
 
-  -- step 2: the customer
-  full_name      text not null,
-  email          text not null,
-  phone          text not null,
+  full_name      varchar(255) not null,
+  email          varchar(255) not null,
+  phone          varchar(255) not null,
 
-  -- step 3: when
   service_date   date not null,
-  time_slot      text not null check (time_slot in ('morning', 'afternoon', 'full_day')),
+  time_slot      enum('morning', 'afternoon', 'full_day') not null,
 
-  -- staff-managed fields
-  status         text not null default 'pending' check (status in ('pending', 'confirmed', 'completed', 'cancelled')),
+  status         enum('pending', 'confirmed', 'completed', 'cancelled') not null default 'pending',
   note           text,
 
-  created_at     timestamptz not null default now(),
-  updated_at     timestamptz not null default now()
-);
+  created_at     timestamp not null default current_timestamp,
+  updated_at     timestamp not null default current_timestamp on update current_timestamp,
 
--- For looking up bookings in the dashboard and the availability check.
-create index if not exists bookings_status_idx on bookings (status);
-create index if not exists bookings_service_date_idx on bookings (service_date);
+  index bookings_status_idx (status),
+  index bookings_service_date_idx (service_date)
+);
