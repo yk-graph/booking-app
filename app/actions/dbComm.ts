@@ -22,7 +22,7 @@ export async function bookingsDB(id: number) {
   const DBresult = (await sql`
     select
       id, city, street_address, lawn_size, full_name, email, phone,
-      to_char(service_date, 'YYYY-MM-DD') as service_date,
+      date_format(service_date, '%Y-%m-%d') as service_date,
       time_slot, status, note, created_at, updated_at
     from bookings
     where id = ${id}

@@ -139,7 +139,7 @@ export async function getBookingsByEmail(email: string): Promise<BookingsByEmail
     const rows = await sql`
       SELECT
         id, city, street_address, lawn_size, full_name, email, phone,
-        to_char(service_date, 'YYYY-MM-DD') AS service_date,
+        date_format(service_date, '%Y-%m-%d') AS service_date,
         time_slot, status, note, created_at, updated_at
       FROM bookings
       WHERE lower(email) = ${email.toLowerCase()}

@@ -18,8 +18,6 @@ function dashboardHref(status: string, city: string, lawnSize: string) {
   return query ? `/dashboard?${query}` : '/dashboard'
 }
 
-// The staff dashboard: every booking, with a link to the detail page.
-
 const SLOT_ORDER: Record<TimeSlot, number> = {
   morning: 1,
   afternoon: 2,
@@ -71,7 +69,7 @@ export default async function DashboardPage({
   const bookings = (await sql`
     select
       id, city, street_address, lawn_size, full_name, email, phone,
-      to_char(service_date, 'YYYY-MM-DD') as service_date,
+      date_format(service_date, '%Y-%m-%d') as service_date,
       time_slot, status, note, created_at, updated_at
     from bookings
     order by service_date asc, time_slot asc
